@@ -48,21 +48,37 @@ How to achieve this, though? Using unidrectional data flow, of course! If I crea
 
 ### Child components
 
-Now that I know the components I need, the `state` I need, and where everything needs to be, I can start writing some code. First, I'll create the child components. I can use Functional components, since they won't need to hold their own state.
+Now that I know the components I need, the `state` I need, and where everything needs to be, I can start writing some code. First, I'll create the child components.
 
 ```javascript
-const FruitList = props => (
-  <ul>
-     {props.fruits.map(fruit => <li>{fruit}</li>)}
-  </ul>
-)
+import React, { Component } from 'react';
 
-const FruitFilter = props => (
-  <div>
-    <label htmlFor="fruit-filter">Filter these Fruits: </label>
-    <input type="text" value={props.value} onChange={props.onChange} name="fruit-filter" />
-   </div>
-)
+class FruitList extends Component {
+  render() {
+    return (
+      <ul>
+        {this.props.fruits.map(fruit => <li>{fruit}</li>)}
+      </ul>
+    );
+  }
+}
+
+export default FruitList;
+```
+
+```javascript
+import React, { Component } from 'react';
+
+class FruitFilter extends Component {
+  render() {
+    return (
+      <div>
+        <label htmlFor="fruit-filter">Filter these Fruits: </label>
+        <input type="text" value={this.props.value} onChange={this.props.onChange} name="fruit-filter" />
+      </div>
+    );
+  }
+}
 ```
 
 `FruitList` renders an unordered list (`ul`) which contains an array of `li` elements, each with a single `fruit` string. `FruitList` uses [array map](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) to convert the array of fruit strings in our data to an array of fruit `li` elements to render. Using `map` to convert data arrays to arrays of UI elements is a common pattern you will use, and see used, in React.
@@ -77,6 +93,7 @@ In the constructor, I'll initialize the state:
 ```javascript
 constructor(props) {
     super(props);
+
     this.state = {
       // initialize the fruit list to the full list passed in props
       fruitsToDisplay: props.fruits,
@@ -89,19 +106,23 @@ constructor(props) {
 I'll need a method to update the `state` when the filter value changes. This method will store the filter `state`, and filter the list of fruits to display. I'll pass this change handler to the filter component to react to user input.
 
 ```javascript
-handleFilterChange(event) {
-  event.preventDefault()
-  const filterValue = event.target.value
+handleFilterChange = (event) => {
+  event.preventDefault();
+
+  const filterValue = event.target.value;
+
   this.setState((prevState, props) => {
     // remove fruits that don't contain the filter value
-    const filteredFruitList = props.fruits.filter(fruit =>
-      fruit.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase()))
+    const filteredFruitList = props.fruits.filter((fruit) => {
+      return fruit.toLowerCase().includes(filterValue.toLowerCase());
+    });
+
     // return new state with the filtered fruit list and the new value of the filter
     return {
       fruitsToDisplay: filteredFruitList,
       filterValue
     }
-  })
+  });
 }
 ```
 
@@ -109,13 +130,13 @@ Finally, I need to render my child components.
 
 ```javascript
 render() {
-    return (
-      <div>
-        <FruitFilter value={this.state.filterValue} onChange={this.handleFilterChange} />
-        <FruitList fruits={this.state.fruitsToDisplay} />
-      </div>
-    )
-  }
+  return (
+    <div>
+      <FruitFilter value={this.state.filterValue} onChange={this.handleFilterChange} />
+      <FruitList fruits={this.state.fruitsToDisplay} />
+    </div>
+  );
+}
 ```
 
 The full container component looks like this:
@@ -124,30 +145,33 @@ The full container component looks like this:
 class FruitContainer extends Component {
 
   constructor(props) {
-    super(props)
+    super(props);
+
     this.state = {
       // initialize the fruit list to the full list passed in props
       fruitsToDisplay: props.fruits,
       // intialize the filter value to an empty string
       filterValue: ''
     };
-    // JavaScript cleanup: bind the context of our filterChange event handler (to have `this` to the context and handler we want)
-    this.handleFilterChange = this.handleFilterChange.bind(this)
   }
 
-  handleFilterChange(event) {
-    event.preventDefault()
+  handleFilterChange = (event) => {
+    event.preventDefault();
+
     const filterValue = event.target.value;
+
     this.setState((prevState, props) => {
       // remove fruits that don't contain the filter value
-      const filteredFruitList = props.fruits.filter(fruit =>
-        fruit.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase()))
+      const filteredFruitList = props.fruits.filter((fruit) => {
+        return fruit.toLowerCase().includes(filterValue.toLowerCase());
+      });
+
       // return new state with the filtered fruit list and the new value of the filter
       return {
         fruitsToDisplay: filteredFruitList,
-        filterValue,
+        filterValue
       }
-    })
+    });
   }
 
   render() {
@@ -156,7 +180,7 @@ class FruitContainer extends Component {
         <FruitFilter value={this.state.filterValue} onChange={this.handleFilterChange} />
         <FruitList fruits={this.state.fruitsToDisplay} />
       </div>
-    )
+    );
   }
 
 }
@@ -182,6 +206,7 @@ the CodePen - you're going to add a feature.
 *Hint: Will you need to have a new state?*
 
 ## Solution - Unmatching Filter
+
 Solution code: https://codepen.io/SuperTernary/pen/mMWddo
 
 Here's a solution showing the Fruit list with two lists. One list shows fruits
@@ -199,22 +224,23 @@ except it is passed a different list of fruits.
 </div>
 ```
 
-Now the app maintains two lists
-of fruits:
-- `fruitsToDisplay` shows all fruits that match the search
-term.
-- `unmatchedFruits` keeps track of which fruits don't match
-the current search term.
+Now the app maintains two lists of fruits:
+- `fruitsToDisplay` shows all fruits that match the search term.
+- `unmatchedFruits` keeps track of which fruits don't match the current search term.
 
 Notice that in the constructor the app initializes the value of `unmatchedFruits` to just an empty list. Within `HandleChange`, we now need to update that list.
 
 ```js
 // remove fruits that don't contain the filter value
-const filteredFruitList = props.fruits.filter(fruit =>
-  fruit.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase()))
+const filteredFruitList = this.props.fruits.filter((fruit) => {
+  return fruit.toLowerCase().includes(filterValue.toLowerCase())
+});
+
 // perform the opposite logic to create a list of fruits that don't match.
-const unmatchedFruits = props.fruits.filter(fruit =>
- !fruit.toLocaleLowerCase().includes(filterValue.toLocaleLowerCase()))
+const unmatchedFruits = this.props.fruits.filter((fruit) => {
+  return !fruit.toLowerCase().includes(filterValue.toLowerCase())
+});
+
 // return new state with the filtered fruit list and the new value of the filter
 return {
  fruitsToDisplay: filteredFruitList,
@@ -227,11 +253,9 @@ return {
 
 It's important that you think through your applications before you start writing
 code. It's often helpful to sketch out your app, and identify:
-- the **components**
-you will need
+- the **components** you will need
 - the **states** you will need
 - where those states need to live
 
-Use the
-unidirectional data flow pattern - hoist your state toward the top of the
+Use the unidirectional data flow pattern - hoist your state toward the top of the 
 component tree so it's available to the children that need it.

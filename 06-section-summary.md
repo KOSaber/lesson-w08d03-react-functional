@@ -47,9 +47,11 @@ For `state`, use `setState`:
 
 ```javascript
 handleChange(event) {
-  this.setState(prevState => ({
-    myPieceOfState: event.target.value,
-  }))
+  this.setState((prevState, props) => {
+    return {
+      myPieceOfState: event.target.value
+    };
+  });
 }
 ```
 

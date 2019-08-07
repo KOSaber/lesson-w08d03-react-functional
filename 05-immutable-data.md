@@ -46,9 +46,11 @@ The good news is that you already know how to avoid this. React makes it easy: c
 
 ```javascript
 handleChange(event) {
-  this.setState(prevState => ({
-    myPieceOfState: event.target.value,
-  }))
+  this.setState((prevState, props) => {
+    return {
+      myPieceOfState: event.target.value
+    };
+  });
 }
 ```
 
