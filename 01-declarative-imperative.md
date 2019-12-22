@@ -83,7 +83,7 @@ Instead of taking the time to write out a specific set of instructions to receiv
 
 #### Practice: Applying a Discount to Items in a Shopping Cart
 
-You notice that your favorite series is on sale this month. You've been holding off, but today is the day! You're going to pick it up and treat yourself. After filling your shopping cart up, you peruse the internet for a discount coupon. Finally, you found one! You furiously enter in `TREATYOSELF2017` into your cart's coupon code input box, and instantaneously your cart reflects the discounted prices. Success!
+You notice that your favorite series is on sale this month. You've been holding off, but today is the day! You're going to pick it up and treat yourself. After filling your shopping cart up, you peruse the internet for a discount coupon. Finally, you found one! You furiously enter in `TREATYOSELFDEC2019` into your cart's coupon code input box, and instantaneously your cart reflects the discounted prices. Success!
 
 How is this discount coded?
 
