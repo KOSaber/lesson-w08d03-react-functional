@@ -115,7 +115,7 @@ Again, you _don't_ need a constructor in every React component, but if you need 
 
 ### The `componentDidMount()` and `componentWillUnmount()` Methods
 
-The `componentDidMount` method is called once, immediately after your component is rendered to the DOM. If you want to make an AJAX request when your component first renders, this is where to do it (_not_ in the constructor, or in `componentWillMount`).
+The `componentDidMount` method is called once, immediately after your component is rendered to the DOM. If you want to make an AJAX request when your component first renders, this is where to do it (_not_ in the constructor).
 
 In the following example, we fetch data from the server, then set the state of the component using the response.
 
