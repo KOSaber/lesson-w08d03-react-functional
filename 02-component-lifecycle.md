@@ -30,21 +30,20 @@ React components' lifecycle events fall into three broad categories:
 
 * **Initializing / Mounting** e.g. What happens when the component is created and inserted into the DOM? Was an initial state set? Methods:
   - `constructor()`
-    - This is sometimes referred to as a combination of `getInitialState()` and `getDefaultProps()`
-  - `componentWillMount()`
-  - `componentDidMount()`
+  - `static getDerivedStateFromProps()`
   - `render()`
+  - `componentDidMount()`
 
 
 * **Updating** e.g. Did an event happen that changed the state? What happens when a component is being re-rendered? Methods:
-  - `componentWillReceiveProps()`
+  - `static getDerivedStateFromProps()`
   - `shouldComponentUpdate()`
-  - `componentWillUpdate()`
-  - `componentDidUpdate()`
   - `render()`
+  - `getSnapshotBeforeUpdate()`
+  - `componentDidUpdate()`
+ 
 
-
-* **Destruction / Unmounting** e.g. What needs to happen when we're done with the component? Method:
+* **Unmounting** e.g. What needs to happen when we're done with the component? Method:
   - `componentWillUnmount()`
 
 
