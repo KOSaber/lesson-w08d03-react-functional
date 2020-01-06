@@ -8,7 +8,7 @@
 
 ## Functional Components
 
-Functional components give you a simpler way of declaring React components. React **class** components give you properties that you don't always need, namely state, methods like `setState`, lifecycle methods like `componentDidMount` and `componentWillReceiveProps`, `refs` and more.
+Functional components give you a simpler way of declaring React components. React **class** components give you properties that you don't always need, namely state, methods like `setState`, lifecycle methods like `componentDidMount` and  `refs` and more.
 
 Some components are purely presentational. They take props and render UI. As a React class, these components usually just contain a `render` method.
 
